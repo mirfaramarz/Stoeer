@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<div class='col-xl'>
+			<hr>
+				<h4>Hello, {{ user.username }}! </h4>
+				<h5>The list of all user</h5>
+				<br>
+				
+					<h1>List of users:</h1>
+					<p>Do you want to add User 
+						<a href="{% url 'user-add' %}"><i class="fa fa-user-plus"></i></a>
+					</p>
+
+				
+				
+				{% if users %}
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">first name</th>
+								<th scope="col">last name</th>
+								<th scope="col">iban</th>
+								<th scope="col"></th>
+								<th scope="col"></th>
+							</tr>
+						</thead>
+						<tbody>
+					{% for usr in users %}
+						<tr>
+							<th scope="row">{{ usr.id }}</th>
+							<td>{{ usr.first_name }}</td>
+							<td>{{ usr.last_name }}</td>
+							<td>{{ usr.iban }}</td>
+							<td><a href="{% url 'user-update' user.id %}"><i class="fas fa-user-edit"></i></a></td>
+							<td><a href="{% url 'user-delete' user.id %}"><i class="fas fa fa-trash"></i></a></td>
+						</tr>
+					{% endfor %}
+						</tbody>
+					</table>
+				{% else %}
+					<p>There are no users!</p>
+					<p><a href="{% url 'user-add' %}">Add one</a></p>
+				{% endif %}
+				</div>
+		</div>
+  </div>
+
+<div class="pagination">
+  <span class="step-links">
+    {% if page_obj.has_previous %}
+    <a href="?page=1">&laquo; first</a>
+    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+    {% endif %}
+
+    <span class="current">
+      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+    </span>
+
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">next</a>
+    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+    {% endif %}
+  </span>
+</div>
+
+{% endblock content %}
